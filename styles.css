@@ -1,0 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
+* {
+  background-color: rgb(204, 204, 204);
+  color: rgb(156, 124, 124);
+  font-size: 19pt;
+  font-family: "Roboto Condensed", sans-serif;
+}
+
+.book {
+  float: left;
+  margin: 40px;
+  padding: 10px;
+  background-color: rgb(155, 145, 117);
+  text-align: center;
+  width: 20%;
+  border-radius: 10px;
+}
+.book > * {
+  background-color: inherit;
+  color: rgb(255, 245, 224);
+}
+.book button {
+  float: right;
+  border: none;
+  color: grey;
+}
+.readButton {
+  border-radius: 5px;
+  background-color: brown;
+}
+.isRead {
+  background-color: rgb(46, 165, 42);
+}
+
+.libraryFrame {
+  text-align: center;
+  width: 90%;
+  border-radius: 5px;
+  float: left;
+  background-color: rgb(61, 68, 77);
+}
+.libraryFrame > * {
+  background-color: inherit;
+}
+
+.hidden {
+  display: none;
+}
+#newBookButton {
+  text-align: center;
+  display: block;
+  background-color: rgb(61, 68, 77);
+  border-radius: 10px;
+}
+#bookForm {
+  float: left;
+}
