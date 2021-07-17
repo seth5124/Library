@@ -3,6 +3,22 @@ const newBookForm = document.getElementById("bookForm");
 const submitButton = document.getElementById("submitButton");
 const newBookButton = document.getElementById("newBookButton");
 
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyBffTv5IlN1urARx1fmR-1ICwPYFi-JsHU",
+    authDomain: "library-a091b.firebaseapp.com",
+    projectId: "library-a091b",
+    storageBucket: "library-a091b.appspot.com",
+    messagingSenderId: "255169206482",
+    appId: "1:255169206482:web:0b1a1ac332d65e1f95f50b",
+    measurementId: "G-8TPJCJRNEY"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const bookDB = db.collection('DB').doc('Books');
+
 class Book {
   constructor(title, author, isRead = false) {
     this.title = title;
@@ -47,6 +63,18 @@ function updateBookList() {
 
 function addBookToLibrary(book) {
   myLibrary.push(book);
+  try{
+    bookDB.set({
+      title:book.title,
+      author: book.author,
+      isRead: book.isRead
+    }).then(() =>{
+      console.log('added book successfully');
+    })
+  }
+  catch(e){
+    console.log('Error adding book: ', e);
+  }
   updateLocalStorage();
 }
 
@@ -73,6 +101,7 @@ submitButton.addEventListener("click", function () {
 });
 
 function appendBook(book) {
+  console.log(book);
   let bookItem = document.createElement("div");
   bookItem.setAttribute("data", myLibrary.indexOf(book));
   bookItem.setAttribute("class", "book");
