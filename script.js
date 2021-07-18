@@ -17,7 +17,7 @@ const newBookButton = document.getElementById("newBookButton");
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
-  const bookDB = db.collection('DB').doc('Books');
+  const bookDB = db.collection('DB');
 
 class Book {
   constructor(title, author, isRead = false) {
@@ -64,7 +64,7 @@ function updateBookList() {
 function addBookToLibrary(book) {
   myLibrary.push(book);
   try{
-    bookDB.set({
+    bookDB.doc(book.title).set({
       title:book.title,
       author: book.author,
       isRead: book.isRead
@@ -78,8 +78,20 @@ function addBookToLibrary(book) {
   updateLocalStorage();
 }
 
-function removeBookFromLibrary(bookIndex) {
+function removeBookFromLibrary(book) {
+  bookIndex = myLibrary.indexOf(book);
   myLibrary.splice(bookIndex, 1);
+  bookDB.where('title','==',book.title).get().then((querySnapshot) =>{
+    let bookToDelete = querySnapshot.docs[0];
+    try{
+    bookToDelete.ref.delete().then(() =>{
+      console.log('Deleted' , bookToDelete.data().title, 'Sucessfully!')
+    });
+  }
+  catch(e){
+    console.log("Error deleting book: ", e);
+  }
+  })
   updateBookList();
   updateLocalStorage();
 }
@@ -96,12 +108,10 @@ submitButton.addEventListener("click", function () {
 
   addBookToLibrary(book);
   updateBookList();
-  //appendBook(book);
   newBookForm.classList.add("hidden");
 });
 
 function appendBook(book) {
-  console.log(book);
   let bookItem = document.createElement("div");
   bookItem.setAttribute("data", myLibrary.indexOf(book));
   bookItem.setAttribute("class", "book");
@@ -114,7 +124,8 @@ function appendBook(book) {
   deleteButton.setAttribute("type", "button");
   deleteButton.addEventListener("click", function (book) {
     let index = deleteButton.parentNode.attributes['data'].value;
-    removeBookFromLibrary(index);
+    let bookToRemove = myLibrary[index];
+    removeBookFromLibrary(bookToRemove);
     bookItem.remove();
   });
 
