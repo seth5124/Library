@@ -31,6 +31,10 @@
 .isRead {
   background-color: rgb(46, 165, 42);
 }
+.not::before{
+  content: "Not ";
+
+}
 
 .libraryFrame {
   text-align: center;
